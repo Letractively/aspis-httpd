@@ -22,46 +22,46 @@ First and above all: be sure that your PHP interpreter is compiled with CGI supp
 == Directives of aspis.conf ==
 Not all the directives are required and some of them are incompatible.
 
-  * Port <integer>
+  * Port < integer >
 This is the port that Aspis runs on.  The default port for http servers is 80. 
 If it is less than 1024, the server must be started as root.
-  * User <user name or UID>
+  * User < user name or UID >
 The name or UID the server should run as.  For Aspis to attempt this, the
 server must be started as root.
-  * Group <group name or GID>
+  * Group < group name or GID >
 The group name or GID the server should run as.  For Aspis to attempt this,
 the server must be started as root.
-  * ServerAdmin <email address>
+  * ServerAdmin < email address >
 The email address where server problems should be sent.
 Note: this is not currently used. 
-  * PidFile <filename>
+  * PidFile < filename >
 Where to put the pid of the process.
 Comment out to write no pid file.
 Note: Because Aspis drops privileges at startup, and the
 pid file is written by the UID/GID before doing so, Aspis
 does not attempt removal of the pid file.
-  * ErrorLog <filename>
+  * ErrorLog < filename >
 The location of the error log file.  If this does not start with
 /, it is considered relative to the server root.
 Set to /dev/null if you don't want errors logged. 
-  * AccessLog <filename>
+  * AccessLog < filename >
 The location of the access log file.  If this does not start with /, it is
 considered relative to the server root.
 Comment out or set to /dev/null (less effective) to disable access logging.
   * VerboseCGILogs
 This is a logical switch and does not take any parameters.
 Comment out to disable.
-  * CGILog <filename>
+  * CGILog < filename >
 The location of the CGI error log file.  If this does not start with /, it 
 is considered relative to the server root. If specified, this is the file 
 that the stderr of CGIs is tied to, *instead* of to the ErrorLog.
-  * CGIumask <umask>
+  * CGIumask < umask >
 The CGIumask is set immediately before execution of the CGI.
 The default value is 027. The number must be interpretable
 unambiguously by the C function strtol. No base is specified,
 so one may use a hexadecimal, decimal, or octal number if 
 it is prefixed accordingly.
-  * ServerName <server_name>
+  * ServerName < server_name >
 The name of this server that should be sent back to
 clients if different than that returned by gethostname.
   * VirtualHost
@@ -70,7 +70,7 @@ Comment out to disable.
 Given DocumentRoot /var/www, requests on interface 'A' or IP 'IP-A'
 become /var/www/IP-A.
 Example: http://localhost/ becomes /var/www/127.0.0.1 
-  * VHostRoot <directory>
+  * VHostRoot < directory >
 The root location for all virtually hosted data
 Comment out to disable.
 Incompatible with 'Virtualhost' and 'DocumentRoot'!!
@@ -83,20 +83,20 @@ specified in rfc1034, which are be summarized here:
 Hostnames must start with a letter, end with a letter or digit, 
 and have as interior characters only letters, digits, and hyphen.
 Hostnames must not exceed 63 characters in length.
-  * DefaultVHost <hostname>
+  * DefaultVHost < hostname >
 Define this in order to have a default hostname when the client does not
 specify one, if using VirtualHostName. If not specified, the word
 "default" will be used for compatibility with older clients.
-  * DocumentRoot <directory>
+  * DocumentRoot < directory >
 The root directory of the HTML documents. If this does not start with
 /, it is considered relative to the server root.
-  * UserDir <directory>
+  * UserDir < directory >
 The name of the directory which is appended onto a user's home directory if a
 ~user request is received.
-  * DirectoryIndex <filename>
+  * DirectoryIndex < filename >
 Name of the file to use as a pre-written HTML directory index.  Please  make
 and use these files.  On the fly creation of directory indexes can be slow.
-  * DirectoryMaker <directory>
+  * DirectoryMaker < directory >
 Name of the program used to generate on-the-fly directory listings.
 The program must take one or two command-line arguments, the first
 being the directory to index (absolute), and the second, which is optional,
@@ -104,19 +104,19 @@ contains what Aspis would have the "title" of the document be.
 Comment out if you don't want on the fly directory listings.
 If this does not start with
 /, it is considered relative to the server root.
-  * KeepAliveMax <integer>
+  * KeepAliveMax < integer >
 Number of KeepAlive requests to allow per connection.  Comment out, or set
 to 0 to disable keepalive processing. 
-  * KeepAliveTimeout <integer>
+  * KeepAliveTimeout < integer >
 Number of seconds to wait before keepalive connections time out.
-  * MimeTypes <file>
+  * MimeTypes < file >
 The location of the mime.types
 file.  If this does not start with /, it is considered relative to 
 the server root. Set to /dev/null if you do not want to load a mime types 
 file. Do *not* comment out (better use AddType!)
-  * DefaultType <mime type>
+  * DefaultType < mime type >
 MIME type used if the file extension is unknown, or there is no file extension.
-  * AddType <mime type> <extension> [extension...]
+  * AddType < mime type > < extension > [extension...]
 Associates a MIME type with an extension or extensions.
   * Redirect, Alias, and ScriptAlias <path1> <path2>
 Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
