@@ -25,7 +25,7 @@ For a quick guide see the [https://code.google.com/p/aspis-httpd/w/edit/AspisInJ
 
 === SSL ===
 
-Aspis does not support SSL, however you can run Aspis behind the Pound proxy server, that can be used as a lightweight SSL interpreter (and much more...).
+Aspis does not support SSL, however you can run Aspis behind the [http://www.apsis.ch/pound Pound] proxy server, that can be used as a lightweight SSL interpreter (and much more...).
 
 == Directives of aspis.conf ==
 Not all the directives are required and some of them are incompatible.
@@ -42,7 +42,7 @@ the server must be started as root.
   * ServerAdmin < email address >
 The email address where server problems should be sent.
 Note: this is not currently used.
-  * ErrorDocument < string > < directory >
+  * ErrorDocument < string > < file >
 Use this for custom error pages, e.g. ErrorDocument 404 /var/www/404.htm . Only static content is allowed at the moment.
   * PidFile < filename >
 Where to put the pid of the process.
@@ -98,9 +98,9 @@ The root directory of the HTML documents. If this does not start with
   * UserDir < directory >
 The name of the directory which is appended onto a user's home directory if a
 ~user request is received.
-  * DirectoryIndex < filename > [filename ...]
+  * DirectoryIndex < filename > [ filename ... ]
 List of the file names to use as a pre-written HTML directory index, up to four.  Please  make and use these files.  On the fly creation of directory indexes can be slow.
-  * DirectoryMaker < directory >
+  * DirectoryMaker < file >
 Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. If this does not start with /, it is considered relative to the server root.
   * DirectoryCache < directory >
 Path to the directory used as cache by the internal directory listing generator. This directive is superseded by DirectoryMaker. Comment out this and DirectoryMaker if you don't want on the fly directory listings.
@@ -119,7 +119,7 @@ MIME type used if the file extension is unknown, or there is no file extension.
 Associates a MIME type with an extension or extensions. Use the MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) and "application/x-httpd-php" for PHP files.
   * RedirectStatus < string >
 PHP needs this. If you don't use PHP you can safely comment out.
-  * PhpHandler < directory >
+  * PhpHandler < file >
 Path to the php interpreter. Default is /usr/bin/php-cgi.
   * Redirect, Alias, and ScriptAlias < path1 > < path2 >
 Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
