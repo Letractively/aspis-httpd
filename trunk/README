@@ -1,0 +1,12 @@
+Aspis is a lightweight http server, a fork of the high performance Boa
+server. 
+
+Boa was created in 1991 by Paul Phillips <paulp@go2net.com>.  It was later
+maintained and enhanced by Larry Doolittle <ldoolitt@boa.org>
+and Jon Nelson <jnelson@boa.org>.
+
+For more information (including installation instructions) look at
+the files INSTALL, README.chroot, NEWS, AUTHORS and COPYING.
+
+Report bugs to Stefano Guidoni <ilguido@users.sf.net>.
+

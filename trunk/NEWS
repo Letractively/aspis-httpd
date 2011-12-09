@@ -1,0 +1,20 @@
+8/12/2011 :: Aspis version 0.3 is released
+  
+  What's new in this release:
+  * basic authentication (Martin Hinner's patch)
+  * a few bugs fixed
+
+8/12/2011 :: Aspis version 0.2 is released
+  
+  What's new in this release:
+  * new (slimmer) chroot
+  * a few bugs fixed
+
+1/12/2011 :: Aspis version 0.1 is released
+  
+  What's new in this release:
+  * PHP support (through php-cgi)
+  * custom error pages
+  * intial support to UTF-8 encoding
+  * multiple index pages
+  * a few bugs fixed
