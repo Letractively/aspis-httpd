@@ -1,0 +1,27 @@
+#
+# Minimal mime.types, add required
+#
+
+application/xml                 xml
+application/x-gtar              gtar
+application/x-gzip              gz
+#application/x-httpd-php3       php3
+application/x-tar               tar
+application/zip                 zip
+audio/mpeg                      mpga mpega mp2 mp3
+image/bitmap                    bmp
+image/gif                       gif
+image/ief                       ief
+image/jpeg                      jpeg jpg jpe
+image/pcx                       pcx
+image/png                       png
+image/svg+xml                   svg
+image/tiff                      tiff tif
+multipart/x-mixed-replace       mjpg
+text/css                        css
+text/html                       html htm
+text/plain                      txt
+text/vnd.wap.wml                wml
+text/vnd.wap.wmlscript          wmls
+text/x-server-parsed-html       shtm shtml srv
+video/mpeg                      mpeg mpg mpe
