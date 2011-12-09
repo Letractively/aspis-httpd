@@ -33,7 +33,9 @@ The group name or GID the server should run as.  For Aspis to attempt this,
 the server must be started as root.
   * ServerAdmin < email address >
 The email address where server problems should be sent.
-Note: this is not currently used. 
+Note: this is not currently used.
+  * ErrorDocument < string > < directory >
+Use this for custom error pages, e.g. ErrorDocument 404 /var/www/404.htm . Only static content is allowed at the moment.
   * PidFile < filename >
 Where to put the pid of the process.
 Comment out to write no pid file.
@@ -71,14 +73,9 @@ Given DocumentRoot /var/www, requests on interface 'A' or IP 'IP-A'
 become /var/www/IP-A.
 Example: http://localhost/ becomes /var/www/127.0.0.1 
   * VHostRoot < directory >
-The root location for all virtually hosted data
-Comment out to disable.
-Incompatible with 'Virtualhost' and 'DocumentRoot'!!
-Given VHostRoot /var/www, requests to host foo.bar.com,
-where foo.bar.com is ip a.b.c.d,
-become /var/www/a.b.c.d/foo.bar.com 
-Hostnames are "cleaned", and must conform to the rules
-specified in rfc1034, which are be summarized here:
+The root location for all virtually hosted data, comment out to disable.
+Incompatible with 'Virtualhost' and 'DocumentRoot'. Given VHostRoot /var/www, requests to host foo.bar.com, where foo.bar.com is ip a.b.c.d,
+become /var/www/a.b.c.d/foo.bar.com . Hostnames are "cleaned", and must conform to the rules specified in rfc1034, which are be summarized here:
 
 Hostnames must start with a letter, end with a letter or digit, 
 and have as interior characters only letters, digits, and hyphen.
@@ -96,7 +93,9 @@ The name of the directory which is appended onto a user's home directory if a
   * DirectoryIndex < filename > [filename ...]
 List of the file names to use as a pre-written HTML directory index, up to four.  Please  make and use these files.  On the fly creation of directory indexes can be slow.
   * DirectoryMaker < directory >
-Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. Comment out if you don't want on the fly directory listings. If this does not start with /, it is considered relative to the server root.
+Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. If this does not start with /, it is considered relative to the server root.
+  * DirectoryCache < directory >
+Path to the directory used as cache by the internal directory listing generator. This directive is superseded by DirectoryMaker. Comment out this and DirectoryMaker if you don't want on the fly directory listings.
   * KeepAliveMax < integer >
 Number of KeepAlive requests to allow per connection.  Comment out, or set to 0 to disable keepalive processing. 
   * KeepAliveTimeout < integer >
@@ -110,6 +109,10 @@ file. Do *not* comment out (better use AddType!)
 MIME type used if the file extension is unknown, or there is no file extension.
   * AddType < mime type > < extension > [extension...]
 Associates a MIME type with an extension or extensions. Use the MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) and "application/x-httpd-php" for PHP files.
+  * RedirectStatus < string >
+PHP needs this. If you don't use PHP you can safely comment out.
+  * PhpHandler < directory >
+Path to the php interpreter. Default is /usr/bin/php-cgi.
   * Redirect, Alias, and ScriptAlias < path1 > < path2 >
 Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
 match the beginning of a request and take appropriate action.  Use
