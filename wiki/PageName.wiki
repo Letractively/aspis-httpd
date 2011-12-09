@@ -7,9 +7,9 @@ Aspis relies on the sole aspis.conf file for its configuration. A mime.types fil
 The Aspis configuration file is parsed with a lex/yacc or flex/bison generated parser.  If it reports an error, the line number will be provided. The syntax of each of these rules is very simple, and they can occur in any order.  Where possible, these directives mimic those of NCSA httpd 1.3.
 
 
-== Preliminary notes about CGI ==
+== Preliminary notes ==
 
-A quick list of preliminary notions about executing CGI and PHP-CGI scripts.
+A quick list of preliminary notions about executing CGI and PHP-CGI scripts, restricted environments and SSL.
 
 ===Perl===
 
@@ -18,6 +18,14 @@ Your Perl scripts must be executables and their first line must be #!/usr/bin/pe
 ===PHP===
 
 First and above all: be sure that your PHP interpreter is compiled with CGI support (usually it's /usr/bin/php-cgi on Linux). PHP files must have the "application/x-httpd-php" MIME type. Moreover you need to set the option "cgi.redirect_status_env" from "php.ini" to 200 and you need to set "RedirectStatus" from aspis.conf to the same value. Be sure that the directive "session.save_path" from php.ini points to a writeable directory, you can set it to "/tmp" if unsure (but it is better a conscious choice).
+
+=== Restricted environment (chroot) ===
+
+For a quick guide see the [https://code.google.com/p/aspis-httpd/w/edit/AspisInJail AspisInJail] wiki page.
+
+=== SSL ===
+
+Aspis does not support SSL, however you can run Aspis behind the Pound proxy server, that can be used as a lightweight SSL interpreter (and much more...).
 
 == Directives of aspis.conf ==
 Not all the directives are required and some of them are incompatible.
