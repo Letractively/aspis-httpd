@@ -21,7 +21,7 @@ First and above all: be sure that your PHP interpreter is compiled with CGI supp
 
 === Restricted environment (chroot) ===
 
-For a quick guide see the [https://code.google.com/p/aspis-httpd/w/edit/AspisInJail AspisInJail] wiki page.
+For a quick guide see the [https://code.google.com/p/aspis-httpd/wiki/AspisInJail AspisInJail] wiki page.
 
 === SSL ===
 
