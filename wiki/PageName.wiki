@@ -23,13 +23,13 @@ First and above all: be sure that your PHP interpreter is compiled with CGI supp
 Not all the directives are required and some of them are incompatible.
 
   * Port <integer>
-This is the port that Boa runs on.  The default port for http servers is 80. 
+This is the port that Aspis runs on.  The default port for http servers is 80. 
 If it is less than 1024, the server must be started as root.
   * User <user name or UID>
-The name or UID the server should run as.  For Boa to attempt this, the
+The name or UID the server should run as.  For Aspis to attempt this, the
 server must be started as root.
   * Group <group name or GID>
-The group name or GID the server should run as.  For Boa to attempt this,
+The group name or GID the server should run as.  For Aspis to attempt this,
 the server must be started as root.
   * ServerAdmin <email address>
 The email address where server problems should be sent.
@@ -100,7 +100,7 @@ and use these files.  On the fly creation of directory indexes can be slow.
 Name of the program used to generate on-the-fly directory listings.
 The program must take one or two command-line arguments, the first
 being the directory to index (absolute), and the second, which is optional,
-contains what Boa would have the "title" of the document be.
+contains what Aspis would have the "title" of the document be.
 Comment out if you don't want on the fly directory listings.
 If this does not start with
 /, it is considered relative to the server root.
