@@ -93,20 +93,12 @@ The root directory of the HTML documents. If this does not start with
   * UserDir < directory >
 The name of the directory which is appended onto a user's home directory if a
 ~user request is received.
-  * DirectoryIndex < filename >
-Name of the file to use as a pre-written HTML directory index.  Please  make
-and use these files.  On the fly creation of directory indexes can be slow.
+  * DirectoryIndex < filename > [filename ...]
+List of the file names to use as a pre-written HTML directory index, up to four.  Please  make and use these files.  On the fly creation of directory indexes can be slow.
   * DirectoryMaker < directory >
-Name of the program used to generate on-the-fly directory listings.
-The program must take one or two command-line arguments, the first
-being the directory to index (absolute), and the second, which is optional,
-contains what Aspis would have the "title" of the document be.
-Comment out if you don't want on the fly directory listings.
-If this does not start with
-/, it is considered relative to the server root.
+Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. Comment out if you don't want on the fly directory listings. If this does not start with /, it is considered relative to the server root.
   * KeepAliveMax < integer >
-Number of KeepAlive requests to allow per connection.  Comment out, or set
-to 0 to disable keepalive processing. 
+Number of KeepAlive requests to allow per connection.  Comment out, or set to 0 to disable keepalive processing. 
   * KeepAliveTimeout < integer >
 Number of seconds to wait before keepalive connections time out.
   * MimeTypes < file >
@@ -118,7 +110,7 @@ file. Do *not* comment out (better use AddType!)
 MIME type used if the file extension is unknown, or there is no file extension.
   * AddType < mime type > < extension > [extension...]
 Associates a MIME type with an extension or extensions.
-  * Redirect, Alias, and ScriptAlias <path1> <path2>
+  * Redirect, Alias, and ScriptAlias < path1 > < path2 >
 Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
 match the beginning of a request and take appropriate action.  Use
 Redirect for other servers, Alias for the same server, and ScriptAlias to
