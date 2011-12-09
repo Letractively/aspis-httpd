@@ -109,7 +109,7 @@ file. Do *not* comment out (better use AddType!)
   * DefaultType < mime type >
 MIME type used if the file extension is unknown, or there is no file extension.
   * AddType < mime type > < extension > [extension...]
-Associates a MIME type with an extension or extensions.
+Associates a MIME type with an extension or extensions. Use the MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) and "application/x-httpd-php" for PHP files.
   * Redirect, Alias, and ScriptAlias < path1 > < path2 >
 Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
 match the beginning of a request and take appropriate action.  Use
