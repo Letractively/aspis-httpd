@@ -88,7 +88,7 @@
 #endif
 
 #ifndef SERVER_VERSION
-#define SERVER_VERSION 				"Aspis v. 0.3"
+#define SERVER_VERSION 				"Aspis v. 0.4"
 #endif
 
 #define CGI_VERSION				"CGI/1.1"

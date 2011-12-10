@@ -599,6 +599,10 @@ static int index_directory(request * req, char *dest_filename)
     struct dirent *dirbuf;
     int bytes = 0;
     char *escname = NULL;
+    
+#ifdef USE_UNICODE
+	//setlocale(LC_ALL, "C");
+#endif
 
     if (chdir(req->pathname) == -1) {
         if (errno == EACCES || errno == EPERM) {
@@ -630,19 +634,18 @@ static int index_directory(request * req, char *dest_filename)
     }
 
     bytes += fprintf(fdstream,
-                     "<HTML><HEAD>\n<TITLE>Index of %s</TITLE>\n</HEAD>\n\n",
+                     "<html><head>\n<title>Index of %s</title>\n</head>\n\n",
                      req->request_uri);
-    bytes += fprintf(fdstream, "<BODY>\n\n<H2>Index of %s</H2>\n\n<PRE>\n",
+    bytes += fprintf(fdstream, "<body>\n\n<h2>Index of %s</h2>\n\n<pre>",
                      req->request_uri);
+    if ((req->request_uri + 1) != '\0')
+		bytes += fprintf(fdstream, " <a href=\"../\">Parent directory</a> [DIR]\n\n");
 
     while ((dirbuf = readdir(request_dir))) {
         if (*(dirbuf->d_name) == '.') {
 			/* it is the current directory or the parent directory
 			 * or a hidden file
-			 */
-			if (!strcmp(dirbuf->d_name, ".."))
-				bytes += fprintf(fdstream,
-                             " <A HREF=\"../\">Parent directory</A> [DIR]\n\n");
+			 */				
             continue;
 		}
 
@@ -650,18 +653,18 @@ static int index_directory(request * req, char *dest_filename)
         if (escname != NULL) {
 #ifndef SOLARIS
             if (dirbuf->d_type == DT_DIR) {
-				bytes += fprintf(fdstream, " <A HREF=\"%s/\">%s</A> [DIR]\n",
-                             escname, dirbuf->d_name);
+				bytes += fprintf(fdstream, " \x9b <a href=\"%s/\">%s</a> [DIR]\n",
+								escname, escname);
 			} else
 #endif
-				bytes += fprintf(fdstream, " <A HREF=\"%s\">%s</A>\n",
-                             escname, dirbuf->d_name);
+				bytes += fprintf(fdstream, " \x9b <a href=\"%s\">%s</a>\n", 
+								escname, escname);
             free(escname);
             escname = NULL;
         }
     }
     closedir(request_dir);
-    bytes += fprintf(fdstream, "</PRE>\n\n</BODY>\n</HTML>\n");
+    bytes += fprintf(fdstream, "</pre>\n\n</body>\n</html>\n");
 
     fclose(fdstream);
 

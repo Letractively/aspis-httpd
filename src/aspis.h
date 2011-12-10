@@ -194,7 +194,7 @@ int req_write_escape_html(request * req, const char *msg);
 int req_flush(request * req);
 char *escape_uri(const char *uri);
 char *escape_string(const char *inp, char *buf);
-char *html_escape_string(const char *inp, char *buf);
+char *html_escape_string(const unsigned char *inp, char *buf);
 
 /* timestamp */
 void timestamp(void);
