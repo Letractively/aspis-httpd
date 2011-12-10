@@ -127,14 +127,18 @@ int req_write_escape_html(request * req, const char *msg)
     char c, *dest;
     const char *inp;
     int left;
-
+#ifdef USE_UNICODE
+#define GUARD 8
+#else
+#define GUARD 6
+#endif
     inp = msg;
     dest = req->buffer + req->buffer_end;
     /* 6 is a guard band, since we don't check the destination pointer
      * in the middle of a transfer of up to 6 bytes
      */
     left = BUFFER_SIZE - req->buffer_end;
-    while ((c = *inp++) && left >= 6) {
+    while ((c = *inp++) && left >= GUARD) {
         switch (c) {
         case '>':
             *dest++ = '&';
@@ -168,8 +172,50 @@ int req_write_escape_html(request * req, const char *msg)
             left -= 6;
             break;
         default:
+#ifdef USE_UNICODE
+			if (c > 193) {
+				if (*inp > 127 && *inp < 192) {
+					if (c < 224) {
+						unsigned int u_val = (c - 194) * 64 + *inp++;
+						*dest++ = '&';
+						*dest++ = '#';
+						*dest++ = 'x';
+						if (c > 195) { 
+							*dest++ = INT_TO_HEX((u_val >> 8) & 0xf);
+							left--;
+						}
+						*dest++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*dest++ = INT_TO_HEX(u_val & 0xf);
+						*dest++ = ';';
+						left -= 6;
+					} else {
+						unsigned int u_val = (c - 224) * 4096 + (*inp++ - 128) * 64;
+						u_val += (*inp++ - 128);
+						*dest++ = '&';
+						*dest++ = '#';
+						*dest++ = 'x';
+						if (c > 224) { 
+							*dest++ = INT_TO_HEX((u_val >> 12) & 0xf);
+							left--;
+						}
+						*dest++ = INT_TO_HEX((u_val >> 8) & 0xf);
+						*dest++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*dest++ = INT_TO_HEX(u_val & 0xf);
+						*dest++ = ';';
+						left -= 7;
+					}
+				} else {
+					/* FIXME: unknown encoding */
+					*dest++ = '?';
+					left--;
+				}
+			} else {
+#endif
             *dest++ = c;
             left--;
+#ifdef USE_UNICODE		
+			}
+#endif
         }
     }
     --inp;
@@ -257,7 +303,7 @@ int req_flush(request * req)
  *  the space that it needs, otherwise it will assume that the user
  *  has already allocated enough space for the variable buf, which
  *  could be up to 3 times the size of inp.  If the routine dynamically
- *  allocates the space, the user is responsible for freeing it afterwords
+ *  allocates the space, the user is responsible for freeing it afterwards
  * Returns: NULL on error, pointer to string otherwise.
  * Note: this function doesn't really belong here, I plopped it here to
  *  work around a "bug" in escape.h (it defines a global, so can't be
@@ -298,14 +344,17 @@ char *escape_string(const char *inp, char *buf)
     return buf;
 }
 
-/* FIXME: utf-8? */
-char *html_escape_string(const char *inp, char *buf)
+char *html_escape_string(const unsigned char *inp, char *buf)
 {
     int max;
     char *ix;
     unsigned char c;
 
+#ifdef USE_UNICODE
+    max = strlen(inp) * 8;
+#else
     max = strlen(inp) * 6;
+#endif
 
     if (buf == NULL && max)
         buf = malloc(sizeof (unsigned char) * (max + 1));
@@ -344,6 +393,36 @@ char *html_escape_string(const char *inp, char *buf)
             *buf++ = ';';
             break;
         default:
+#ifdef USE_UNICODE
+			if (c > 193) {
+				if (*inp > 127 && *inp < 192) {
+					if (c < 224) {
+						unsigned int u_val = (c - 194) * 64 + *inp++;
+						*buf++ = '&';
+						*buf++ = '#';
+						*buf++ = 'x';
+						if (c > 195) *buf++ = INT_TO_HEX((u_val >> 8) & 0xf);
+						*buf++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*buf++ = INT_TO_HEX(u_val & 0xf);
+						*buf++ = ';';
+					} else {
+						unsigned int u_val = (c - 224) * 4096 + (*inp++ - 128) * 64;
+						u_val += (*inp++ - 128);
+						*buf++ = '&';
+						*buf++ = '#';
+						*buf++ = 'x';
+						if (c > 224) *buf++ = INT_TO_HEX((u_val >> 12) & 0xf);
+						*buf++ = INT_TO_HEX((u_val >> 8) & 0xf);
+						*buf++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*buf++ = INT_TO_HEX(u_val & 0xf);
+						*buf++ = ';';
+					}
+				} else {
+					/* FIXME: unknown encoding */
+					*buf++ = '?';
+				}
+			} else
+#endif
             *buf++ = c;
         }
     }
