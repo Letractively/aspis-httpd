@@ -85,7 +85,7 @@ void open_logs(void)
             cgi_log_name = NULL;
             cgi_log_fd = 0;
         } else {
-            if (fcntl(cgi_log_fd, F_SETFD, 1) == -1) {
+            if (fcntl(cgi_log_fd, F_SETFD, FD_CLOEXEC) == -1) {
                 WARN("unable to set close-on-exec flag for cgi_log");
                 free(cgi_log_name);
                 cgi_log_name = NULL;

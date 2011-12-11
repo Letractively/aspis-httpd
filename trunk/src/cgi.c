@@ -689,6 +689,13 @@ int init_cgi(request * req)
             return 0;
 
         close(pipes[1]);
+		/* JuL: Set the close-on-exec on the file so
+		that the following
+		cgi scripts won't inherit the file descriptor */
+		if (fcntl(pipes[0], F_SETFD, FD_CLOEXEC) == -1) {
+			log_error_time();
+			perror("fd - close on exec");
+		}
         req->data_fd = pipes[0];
 
         req->status = PIPE_READ;
