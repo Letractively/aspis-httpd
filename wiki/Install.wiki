@@ -49,4 +49,4 @@ You can find a sample setup in "$(prefix)/share/aspis", where prefix is your ins
 
 == CHROOT (Aspis put in jail) ==
 
-If you want to run Aspis in a restricted enviroment, please refer to the "Chroot" and "Configuration" wiki page.
+If you want to run Aspis in a restricted enviroment, please refer to the [AspisInJail chroot] and [NewPage configuration] wiki page.
