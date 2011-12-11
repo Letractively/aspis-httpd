@@ -492,7 +492,7 @@ int translate_uri(request * req)
 					i++;
 				}
 				if (i) i = 0;
-				/* should check for gzipped index files ? */
+				/* should check for gzipped index files ?  No */
 				while (stc_directory_index[i][0] != '\0') {
 					memcpy(st + lon, stc_directory_index[i], MAX_INDEX_NAME_LENGTH + 1);
 					if (access(st, F_OK) == 0) {

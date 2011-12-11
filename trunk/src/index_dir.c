@@ -56,7 +56,11 @@ char *html_escape_string(const char *inp, char *dest,
     char *buf;
     unsigned char c;
 
-    max = len * 6;
+#ifdef USE_UNICODE
+    max = strlen(inp) * 8;
+#else
+    max = strlen(inp) * 6;
+#endif
 
     if (dest == NULL && max)
         dest = malloc(sizeof (unsigned char) * (max + 1));
@@ -95,6 +99,36 @@ char *html_escape_string(const char *inp, char *dest,
             *dest++ = ';';
             break;
         default:
+#ifdef USE_UNICODE
+			if (c > 193) {
+				if (*inp > 127 && *inp < 192) {
+					if (c < 224) {
+						unsigned int u_val = (c - 194) * 64 + *inp++;
+						*dest++ = '&';
+						*dest++ = '#';
+						*dest++ = 'x';
+						if (c > 195) *dest++ = INT_TO_HEX((u_val >> 8) & 0xf);
+						*dest++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*dest++ = INT_TO_HEX(u_val & 0xf);
+						*dest++ = ';';
+					} else {
+						unsigned int u_val = (c - 224) * 4096 + (*inp++ - 128) * 64;
+						u_val += (*inp++ - 128);
+						*dest++ = '&';
+						*dest++ = '#';
+						*dest++ = 'x';
+						if (c > 224) *dest++ = INT_TO_HEX((u_val >> 12) & 0xf);
+						*dest++ = INT_TO_HEX((u_val >> 8) & 0xf);
+						*dest++ = INT_TO_HEX((u_val >> 4) & 0xf);
+						*dest++ = INT_TO_HEX(u_val & 0xf);
+						*dest++ = ';';
+					}
+				} else {
+					/* FIXME: unknown encoding */
+					*dest++ = '?';
+				}
+			} else
+#endif
             *dest++ = c;
         }
     }

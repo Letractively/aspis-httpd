@@ -158,7 +158,7 @@ static char *env_gen_extra(const char *key, const char *value,
     key_len = strlen(key);
     value_len = strlen(value);
     /* leave room for '=' sign and null terminator */
-    result = malloc(extra + key_len + value_len + 2);
+    result = (char *)malloc(extra + key_len + value_len + 2);
     if (result) {
         memcpy(result + extra, key, key_len);
         *(result + extra + key_len) = '=';
