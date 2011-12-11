@@ -58,7 +58,7 @@ request *new_request(void)
         req = request_free;     /* first on free list */
         dequeue(&request_free, request_free); /* dequeue the head */
     } else {
-        req = (request *) malloc(sizeof (request));
+        req = (request *) malloc(sizeof(request));
         if (!req) {
             log_error_time();
             perror("malloc for new request");
