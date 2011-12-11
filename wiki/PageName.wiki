@@ -98,7 +98,7 @@ The root directory of the HTML documents. If this does not start with
   * UserDir < directory >
 The name of the directory which is appended onto a user's home directory if a
 ~user request is received.
-  * DirectoryIndex < filename > [ filename ... ]
+  * DirectoryIndex < filename > `[` filename ... `]`
 List of the file names to use as a pre-written HTML directory index, up to four.  Please  make and use these files.  On the fly creation of directory indexes can be slow.
   * DirectoryMaker < file >
 Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. If this does not start with /, it is considered relative to the server root.
@@ -115,7 +115,7 @@ the server root. Set to /dev/null if you do not want to load a mime types
 file. Do *not* comment out (better use AddType!)
   * DefaultType < mime type >
 MIME type used if the file extension is unknown, or there is no file extension.
-  * AddType < mime type > < extension > [extension...]
+  * AddType < mime type > < extension > `[`extension...`]`
 Associates a MIME type with an extension or extensions. Use the MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) and "application/x-httpd-php" for PHP files.
   * RedirectStatus < string >
 PHP needs this. If you don't use PHP you can safely comment out.
