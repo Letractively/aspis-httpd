@@ -58,6 +58,7 @@ request *new_request(void)
         req = request_free;     /* first on free list */
         dequeue(&request_free, request_free); /* dequeue the head */
     } else {
+		/* FIXME: requests can grow much more than sizeof(request) */
         req = (request *) malloc(sizeof(request));
         if (!req) {
             log_error_time();

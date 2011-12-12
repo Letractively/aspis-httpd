@@ -282,15 +282,18 @@ static int complete_env(request * req)
 	
 	if (req->cgi_type == PHP) {
 		char cpt[1025];
-		unsigned int lpt = strlen(server_root);
 		unsigned int lpn = strlen(req->pathname);
-		memcpy(cpt, server_root, lpt);
-		if (cpt[lpt - 1] != '/') {
-			cpt[lpt] = '/';
-			lpt++;
+		if (req->pathname[0] == '/') {
+			my_add_cgi_env(req, "SCRIPT_FILENAME", req->pathname);
+		} else {
+			memcpy(cpt, server_root, server_root_len);
+			/*if (cpt[server_root_len - 1] != '/') {
+				cpt[server_root_len] = '/';
+				server_root_len++;
+			}*/
+			memcpy(cpt + server_root_len, req->pathname ,lpn + 1);
+			my_add_cgi_env(req, "SCRIPT_FILENAME", cpt);
 		}
-		memcpy(cpt + lpt, req->pathname ,lpn + 1);
-		my_add_cgi_env(req, "SCRIPT_FILENAME", cpt);
 	}
 
     if (req->method == M_POST) {

@@ -56,7 +56,7 @@
 #define SOCKETBUF_SIZE                          32768
 #define CLIENT_STREAM_SIZE                      8192
 #define BUFFER_SIZE                             4096
-#define MAX_HEADER_LENGTH			1024
+#define MAX_HEADER_LENGTH			4096
 
 #define MIME_HASHTABLE_SIZE			47
 #define ALIAS_HASHTABLE_SIZE        17

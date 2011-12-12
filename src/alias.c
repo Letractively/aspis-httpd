@@ -440,10 +440,14 @@ int translate_uri(request * req)
 		int i, lon, lpn = strlen(req->pathname);
 		char st[MAX_PATH_LENGTH];
 		struct stat st_check;
-
-		memcpy(st, server_root, server_root_len + 1);
-		memcpy(st + server_root_len, req->pathname, lpn + 1);
-		lon = server_root_len + lpn; //strlen(st);
+        if (req->pathname[0] == '/') {
+			memcpy(st, req->pathname, lpn + 1);
+			lon = lpn;
+		} else {
+			memcpy(st, server_root, server_root_len + 1);
+			memcpy(st + server_root_len, req->pathname, lpn + 1);
+			lon = server_root_len + lpn; //strlen(st);
+		}
 		i = stat(st,&st_check);
 		if (i == 0) {
 			/* it is a file or a directory */
@@ -463,14 +467,14 @@ int translate_uri(request * req)
 					return -1;
 				}
 				while (php_usage && php_directory_index[i][0] != '\0') {
-					memcpy(st + lon, php_directory_index[i], MAX_INDEX_NAME_LENGTH + 1);	
+					memcpy(st + lon, php_directory_index[i], MAX_INDEX_NAME_LENGTH + 1);
 					if (access(st, F_OK) == 0) {
 						unsigned int lan = strlen(php_directory_index[i]) ;
 						memcpy(st, req->pathname, lpn);
 						memcpy(st + lpn, php_directory_index[i], lan + 1);
 						req->pathname = strdup(st);
 						req->script_name = strdup(req->request_uri);
-						memcpy(req->script_name + strlen(req->request_uri), php_directory_index[i], lan + 1);
+						memcpy(req->script_name + uri_len, php_directory_index[i], lan + 1);
 						req->cgi_type = PHP;
 						return 1;
 					}
@@ -485,7 +489,7 @@ int translate_uri(request * req)
 						memcpy(st + lpn, cgi_directory_index[i], lan + 1);
 						req->pathname = strdup(st);
 						req->script_name = strdup(req->request_uri);
-						memcpy(req->script_name + strlen(req->request_uri), cgi_directory_index[i], lan + 1);
+						memcpy(req->script_name + uri_len, cgi_directory_index[i], lan + 1);
 						req->cgi_type = CGI;	
 						return 1;
 					}
@@ -519,22 +523,88 @@ int translate_uri(request * req)
 			while (c != NULL ) {
 				i = c - ss;
 				ss[i] = '\0';
-				if (php_usage && i && strcmp(PHP_MIME_TYPE, get_mime_type(ss)) == 0) {
+				if (i) {
 					unsigned int diff = uri_len - i;
-					req->script_name = strdup(ss);
-					memcpy(ss, req->request_uri + i, diff);
-					ss[uri_len] = '\0';
-					req->path_info = strdup(ss);
-					req->pathname[lpn - diff] = '\0';
-					memcpy(ss, server_root, server_root_len + 1);
-					memcpy(ss + server_root_len, req->path_info, strlen(req->path_info) + 1);
-					req->path_translated = strdup(ss);
-					if (!req->script_name) {
-						aspis_perror(req, "Could not strdup req->request_uri for req->script_name.");
-						return 0;
-					}
-					req->cgi_type = PHP;
-					return 1;
+					if (php_usage && strcmp(PHP_MIME_TYPE, get_mime_type(ss)) == 0) {
+						req->script_name = strdup(ss);
+						memcpy(ss, req->request_uri + i, diff);
+						ss[uri_len] = '\0';
+						req->path_info = strdup(ss);
+						req->pathname[lpn - diff] = '\0';
+						memcpy(ss, server_root, server_root_len + 1);
+						memcpy(ss + server_root_len, req->path_info, strlen(req->path_info) + 1);
+						req->path_translated = strdup(ss);
+						if (!req->script_name) {
+							aspis_perror(req, "Could not strdup req->request_uri for req->script_name.");
+							return 0;
+						}
+						req->cgi_type = PHP;
+						return 1;
+					} else if (strcmp(CGI_MIME_TYPE, get_mime_type(ss)) == 0) {
+						req->script_name = strdup(ss);
+						memcpy(ss, req->request_uri + i, diff);
+						ss[uri_len] = '\0';
+						req->path_info = strdup(ss);
+						req->pathname[lpn - diff] = '\0';
+						memcpy(ss, server_root, server_root_len + 1);
+						memcpy(ss + server_root_len, req->path_info, strlen(req->path_info) + 1);
+						req->path_translated = strdup(ss);
+						if (!req->script_name) {
+							aspis_perror(req, "Could not strdup req->request_uri for req->script_name.");
+							return 0;
+						}
+						req->cgi_type = CGI;
+						return 1;
+					} /*else {
+						unsigned int pos = lon - uri_len + i + 1;
+						st[pos] = '\0';
+						if (access(st,F_OK)) {
+							// it is a file or a directory
+							unsigned int j = 0;
+							while (php_usage && php_directory_index[j][0] != '\0') {
+								memcpy(st + pos, php_directory_index[j], MAX_INDEX_NAME_LENGTH + 1);	
+								if (access(st, F_OK) == 0) {
+									unsigned int lan = strlen(php_directory_index[j]) ;
+									memcpy(st, req->pathname, lpn);
+									memcpy(st + lpn, php_directory_index[j], lan + 1);
+									req->pathname = strdup(st);
+									req->script_name = strdup(req->request_uri);
+									memcpy(req->script_name + uri_len, php_directory_index[j], lan + 1);
+									memcpy(ss, req->request_uri + i, diff);
+									ss[uri_len] = '\0';
+									req->path_info = strdup(ss);
+									memcpy(ss, server_root, server_root_len + 1);
+									memcpy(ss + server_root_len, req->path_info, strlen(req->path_info) + 1);
+									req->path_translated = strdup(ss);
+									req->cgi_type = PHP;
+									return 1;
+								}
+								j++;
+							} 
+							if (j) j = 0;
+							while (cgi_directory_index[j][0] != '\0') {
+								memcpy(st + pos, cgi_directory_index[j], MAX_INDEX_NAME_LENGTH + 1);
+								if (access(st, F_OK) == 0) {
+									unsigned int lan = strlen(cgi_directory_index[j]) ;
+									memcpy(st, req->pathname, lpn);
+									memcpy(st + lpn, cgi_directory_index[j], lan + 1);
+									req->pathname = strdup(st);
+									req->script_name = strdup(req->request_uri);
+									memcpy(req->script_name + uri_len, cgi_directory_index[j], lan + 1);
+									memcpy(ss, req->request_uri + i, diff);
+									ss[uri_len] = '\0';
+									req->path_info = strdup(ss);
+									memcpy(ss, server_root, server_root_len + 1);
+									memcpy(ss + server_root_len, req->path_info, strlen(req->path_info) + 1);
+									req->path_translated = strdup(ss);
+									req->cgi_type = CGI;	
+									return 1;
+								}
+								j++;
+							}
+							goto END;
+						}
+					} */
 				}
 				c = strrchr(ss, (int) '/');
 			}
