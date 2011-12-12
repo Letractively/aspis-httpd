@@ -45,6 +45,7 @@ int max_fd = 0;
 
 void loop(int server_s)
 {
+	int ret;
     FD_ZERO(ASPIS_READ);
     FD_ZERO(ASPIS_WRITE);
 
@@ -92,24 +93,32 @@ void loop(int server_s)
             req_timeout.tv_sec = (request_ready ? 0 : default_timeout);
             req_timeout.tv_usec = 0l; /* reset timeout */
 
-            if (select(max_fd + 1, ASPIS_READ,
-                       ASPIS_WRITE, NULL,
-                       (request_ready || request_block ?
-                        &req_timeout : NULL)) == -1) {
-                /* what is the appropriate thing to do here on EBADF */
+			ret = select(max_fd + 1, ASPIS_READ,
+							ASPIS_WRITE, NULL,
+							(request_ready || request_block ?
+							&req_timeout : NULL));
+            if ( ret <= 0) {
+				if (ret == 0) {
+					/*time(&current_time);
+					max_fd = -1;*/
+					goto END;
+				}
+                /* FIXME: 
+                 * what is the appropriate thing to do here on EBADF */
                 if (errno == EINTR)
                     continue;       /* while(1) */
                 else if (errno != EBADF) {
                     DIE("select");
                 }
             }
-            /* FIXME: optimize for when select returns 0 (timeout).
+            /* optimize for when select returns 0 (timeout).
              * Thus avoiding many operations in fdset_update
              * and others.
              */
             if (!sigterm_flag && FD_ISSET(server_s, ASPIS_READ)) {
                 pending_requests = 1;
             }
+            END:
             time(&current_time); /* for "new" requests if we've been in
             * select too long */
             /* if we skip this section (for example, if max_fd == 0),

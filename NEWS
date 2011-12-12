@@ -1,4 +1,10 @@
-8/12/2011 :: Aspis version 0.3 is released
+12/12/2011 :: Aspis version 0.4 is released
+  
+  What's new in this release:
+  * complete support to UTF-8
+  * a few bugs fixed
+
+9/12/2011 :: Aspis version 0.3 is released
   
   What's new in this release:
   * basic authentication (Martin Hinner's patch)

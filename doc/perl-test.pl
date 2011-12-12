@@ -11,6 +11,8 @@ print <<EOH;
 <h1> Perl test </h1>
 EOH
 
+print '<pre>';
 exec('perl -v');
+print '</pre>';
 
 print "</body></html>";
