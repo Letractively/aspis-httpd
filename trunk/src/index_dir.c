@@ -263,15 +263,27 @@ int index_directory(char *dir, char *title)
         return -1;
     }
 
-    printf("<html>\n"
-           "<head>\n<title>Index of %s</title>\n</head>\n\n"
-           "<body bgcolor=\"#ffffff\">\n"
-           "<H2>Index of %s</H2>\n"
+    printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"\n"
+           " \"http://www.w3.org/TR/html4/loose.dtd\">\n"
+           "<html>\n"
+           "<head>\n<title>%s (index)</title>\n"
+	   "<style type=\"text/css\">\n"
+	   "td.dircell1 {width: 40%%;} \n"
+	   "td.filecell1 {width: 40%%;} \n"
+	   "</style>\n"
+	   "<link rel=\"stylesheet\" href=\"aspis_indexer.css\" type=\"text/css\">\n"
+	   "</head>\n\n"
+           "<body>\n"
+           "<H2>%s (index)</H2>\n"
            "<table>\n%s",
            html_filename, html_filename,
            (strcmp(title, "/") == 0 ? "" :
-            "<tr><td colspan=3><h3>Directories</h3></td></tr>"
-            "<tr><td colspan=3><a href=\"../\">Parent Directory</a></td></tr>\n"));
+            "<tr id='dirheader'><th colspan=3>Directories</th></tr>"
+#ifdef USE_UNICODE
+            "<tr id='parentdir'><td colspan=3><a href=\"../\"> &#x21D1; Parent</a></td></tr>\n"));
+#else
+            "<tr id='parentdir'><td colspan=3><a href=\"../\"> Parent</a></td></tr>\n"));
+#endif
 
     for (i = 0; i < numdir; ++i) {
         dirbuf = array[i];
@@ -297,17 +309,17 @@ int index_directory(char *dir, char *title)
             send_error(4);
             return -1;
         }
-        printf("<tr>"
-               "<td width=\"40%%\"><a href=\"%s/\">%s/</a></td>"
-               "<td align=right>%s</td>"
-               "<td align=right>%ld bytes</td>"
+        printf("<tr class='dirtabrow'>"
+               "<td class='dircell1'><a href=\"%s/\">%s/</a></td>"
+               "<td align=right class='dircell2'>%s</td>"
+               "<td align=right class='dircell3'>%ld bytes</td>"
                "</tr>\n",
                escaped_filename, html_filename,
                ctime(&statbuf.st_mtime), (long) statbuf.st_size);
     }
 
     printf
-        ("<tr><td colspan=3>&nbsp;</td></tr>\n<tr><td colspan=3><h3>Files</h3></td></tr>\n");
+        ("<tr id='separator'><tr colspan=3>&nbsp;</tr></tr>\n<tr id='fileheader'><th colspan=3>Files</th></tr>\n");
 
     for (i = 0; i < numdir; ++i) {
         int len;
@@ -342,11 +354,11 @@ int index_directory(char *dir, char *title)
                 return -1;
             }
 
-            printf("<tr>"
-                   "<td width=\"40%%\"><a href=\"%s\">%s</a> "
+            printf("<tr class='filetabrow'>"
+                   "<td class='filecell1'><a href=\"%s\">%s</a> "
                    "<a href=\"%s.gz\">(.gz)</a></td>"
-                   "<td align=right>%s</td>"
-                   "<td align=right>%ld bytes</td>"
+                   "<td align=right class='filecell2'>%s</td>"
+                   "<td align=right class='filecell3'>%ld B</td>"
                    "</tr>\n",
                    escaped_filename, html_filename, http_filename,
                    ctime(&statbuf.st_mtime), (long) statbuf.st_size);
@@ -357,10 +369,10 @@ int index_directory(char *dir, char *title)
                 send_error(4);
                 return -1;
             }
-            printf("<tr>"
-                   "<td width=\"40%%\"><a href=\"%s\">%s</a></td>"
-                   "<td align=right>%s</td>"
-                   "<td align=right>%ld bytes</td>"
+            printf("<tr class='filetabrow'>"
+                   "<td class='filecell1'><a href=\"%s\">%s</a></td>"
+                   "<td align=right class='filecell2'>%s</td>"
+                   "<td align=right class='filecell3'>%ld B</td>"
                    "</tr>\n",
                    escaped_filename, html_filename,
                    ctime(&statbuf.st_mtime), (long) statbuf.st_size);
@@ -413,11 +425,11 @@ int main(int argc, char *argv[])
     now[strlen(now) - 1] = '\0';
 #ifdef USE_LOCALTIME
     printf("</table>\n<hr noshade>\nIndex generated %s %s\n"
-           "<!-- This program is part of the Aspis Webserver Copyright (C) 1991-2002 http://www.boa.org -->\n"
+           "<!-- the Aspis Webserver Copyright (C) 1991-2002 http://www.boa.org (C) 2011 http://code.google.com/p/aspis-httpd/-->\n"
            "</body>\n</html>\n", now, TIMEZONE(timeptr));
 #else
     printf("</table>\n<hr noshade>\nIndex generated %s UTC\n"
-           "<!-- This program is part of the Aspis Webserver Copyright (C) 1991-2002 http://www.boa.org -->\n"
+           "<!-- the Aspis Webserver Copyright (C) 1991-2002 http://www.boa.org (C) 2011 http://code.google.com/p/aspis-httpd/-->\n"
            "</body>\n</html>\n", now);
 #endif
 
