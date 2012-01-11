@@ -95,9 +95,7 @@ static void c_add_alias(char *v1, char *v2, void *t);
 static void c_add_access(char *v1, char *v2, void *t);
 static void c_set_errorpage (char *v1, char *v2, void *t);
 
-#ifdef USE_AUTH
 void c_add_auth(char *v1, char *v2, void *t);
-#endif
 
 struct ccommand {
     const char *name;
@@ -178,9 +176,7 @@ struct ccommand clist[] = {
     {"CGIRlimitData", S2A, c_set_int, &cgi_rlimit_data},
     {"CGINice", S2A, c_set_int, &cgi_nice},
 #endif
-#ifdef USE_AUTH
     { "Auth", S2A, c_add_auth, NULL },
-#endif
     {"CGIEnv", S2A, c_add_cgi_env, NULL},
     {"RedirectStatus", S1A, c_set_string, &redirect_status},
     {"PhpHandler", S1A, c_set_string, &php_handler},
@@ -378,33 +374,40 @@ static void c_add_alias(char *v1, char *v2, void *t)
 
 static void c_add_access(char *v1, char *v2, void *t)
 {
-#ifdef ACCESS_CONTROL
+#ifdef USE_AC
     access_add(v1, *(int *) t);
 #else
     log_error_time();
     fprintf(stderr,
             "This version of Aspis doesn't support access controls.\n"
-            "Please recompile with --enable-access-control.\n");
+            "Please recompile with --enable-ac.\n");
 #endif                          /* ACCESS_CONTROL */
 }
 
-#ifdef USE_AUTH
 void c_add_auth(char *arg1, char *arg2, void *t)
 {
-	/* format is Auth PATH [TYPE:]FILE */
-	char *file = strchr(arg2, ':');
-	if (file) {
-		*file = '\0';
-		file++;
-		if(file[0] == '\0') file = NULL;
-	}
-	else {
-		file = arg2;
-		arg2 = "Basic";
-	}
-	auth_add(arg1, file, arg2);
-}
+#ifdef USE_AUTH
+    /* format is Auth PATH [TYPE:]FILE */
+    char *file = strchr(arg2, ':');
+    if (file) {
+        *file = '\0';
+        file++;
+        if(file[0] == '\0') file = NULL;
+        }
+    else {
+        file = arg2;
+        arg2 = "Basic";
+    }
+    auth_add(arg1, file, arg2);
+#else
+    log_error_time();
+    fprintf(stderr,
+            "This version of Aspis doesn't support basic authentication.\n"
+            "Please recompile with --enable-auth.\n"); 
 #endif
+
+}
+
 
 /* set error page path, I use just a vector, because vectors are fast */
 static void c_set_errorpage (char *v1, char *v2, void *t)
@@ -617,7 +620,7 @@ void read_config_files(void)
     if (!config_file_name) {
         config_file_name = DEFAULT_CONFIG_FILE;
     }
-#ifdef ACCESS_CONTROL
+#ifdef USE_AC
     access_init();
 #endif                          /* ACCESS_CONTROL */
 

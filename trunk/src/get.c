@@ -119,13 +119,6 @@ int init_get(request * req)
         return 0;
     }
 
-#ifdef ACCESS_CONTROL
-    if (!access_allow(req->pathname)) {
-      send_r_forbidden(req);
-      return 0;
-    }
-#endif
-
     fstat(data_fd, &statbuf);
 
     if (S_ISDIR(statbuf.st_mode)) { /* directory */
@@ -634,18 +627,22 @@ static int index_directory(request * req, char *dest_filename)
     }
 
     bytes += fprintf(fdstream,
-                     "<html><head>\n<title>Index of %s</title>\n</head>\n\n",
+                     "<html><head>\n<title>%s (index)</title>\n</head>\n\n",
                      req->request_uri);
-    bytes += fprintf(fdstream, "<body>\n\n<h2>Index of %s</h2>\n\n<pre>",
+    bytes += fprintf(fdstream, "<body>\n\n<h2>%s (index)</h2>\n\n<pre>",
                      req->request_uri);
     if ((req->request_uri + 1) != '\0')
-		bytes += fprintf(fdstream, " <a href=\"../\">Parent directory</a> [DIR]\n\n");
+#ifdef USE_UNICODE
+        bytes += fprintf(fdstream, " <a href=\"../\">&#x21D1; Parent</a> [DIR]\n\n");
+#else
+        bytes += fprintf(fdstream, " <a href=\"../\">Parent</a> [DIR]\n\n");
+#endif
 
     while ((dirbuf = readdir(request_dir))) {
         if (*(dirbuf->d_name) == '.') {
 			/* it is the current directory or the parent directory
 			 * or a hidden file
-			 */				
+			 */
             continue;
 		}
 
@@ -657,7 +654,7 @@ static int index_directory(request * req, char *dest_filename)
 								escname, escname);
 			} else
 #endif
-				bytes += fprintf(fdstream, " \x9b <a href=\"%s\">%s</a>\n", 
+				bytes += fprintf(fdstream, " <a href=\"%s\">%s</a>\n", 
 								escname, escname);
             free(escname);
             escname = NULL;

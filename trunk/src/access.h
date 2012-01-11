@@ -26,8 +26,10 @@
 
 enum access_type { ACCESS_DENY, ACCESS_ALLOW };
 
+#ifdef USE_AC
 void access_init(void);
 void access_add(const char *pattern, enum access_type);
 enum access_type access_allow(const char *file);
+#endif
 
 #endif                          /* _ACCESS_H */

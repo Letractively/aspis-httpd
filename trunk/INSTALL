@@ -20,6 +20,9 @@ Self explicatory, it enables ipv6 support.
 * --enable-gunzip
 You can serve gzipped pages, it should work :-)
 
+* --enable-ac
+If you want to Allow/Deny access to certain pages.
+
 Run "./configure --help", without the quotation marks,
 for more informations about configure options.
 
