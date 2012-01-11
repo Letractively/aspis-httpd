@@ -1,11 +1,7 @@
-<!DOCTYPE html 
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<html>
-  <head>
-    <title>Aspis reference guide</title>
-    <style type='text/css'><!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>Aspis reference guide</title>
+  <!--HTMLHeader--><style type="text/css"><!--
   ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
   code.escaped { white-space: nowrap; }
   .vspace { margin-top:1.33em; }
@@ -36,256 +32,323 @@
     .rfloat { float:right; margin-left:0.5em; }
 a.varlink { text-decoration:none; }
 
---></style><meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-  </head>
-  <body>
+body { 
+  width:auto;
+  background-color:white;
+  color:black;
+  font-family:serif;
+}
+
+#printhead { 
+  font-family:sans-serif;
+  border-top:3px solid #a0a0a0; 
+  border-bottom:5px solid #a0a0a0; 
+  margin-bottom:1em; 
+}
+#printhead h3 { margin-top:0px; } 
+#printhead h1 { margin-bottom:0px; }
+
+#printtitle { 
+}
+
+#printfoot {
+  clear:both;
+  margin-top:1em; 
+  border-top:5px solid #a0a0a0; 
+  font-size:smaller; 
+}
+
+  
+a:link { color:#444444; font-weight:bold; text-decoration:none; }
+a:visited { color:#444444; font-weight:bold; text-decoration:none; }
+a.wikilink:hover { color: #444444; text-decoration:underline; }
+a.createlink { color:#444444; }
+a.createlink:visited { color:#444444; }
+a.createlink:hover { color:#ff2222; }
+
+--></style><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  <meta name="robots" content="noindex,nofollow">
+<meta name="description" content="This is the quick reference guide of the Aspis web server">
+
+</head>
+<body>
+<!--PageText-->
+<div id="wikitext">
 <h1>Aspis reference guide</h1>
-<p>Reference guide for Aspis http server version 0.4. Edited on 11th December 2011.
+<p>Reference guide for Aspis http server version 0.5. Edited on 11th January 2012.
 </p>
-<div class='vspace'></div><h2>Index</h2>
-<ul><li>1. <a href='#install'>Install</a>
-<ul><li><a href='#quick'>quick installation instructions</a>
-</li><li><a href='#configure'>configure options</a>
-
-</li><li><a href='#options'>install options</a>
-</li><li><a href='#post'>post installation</a>
-</li><li><a href='#chroot'>chroot (aspis in jail)</a>
-</li></ul></li><li>2. <a href='#configuration'>Configuration</a>
-<ul><li><a href='#preliminary'>preliminary notes</a>
-</li><li><a href='#directives'>directives of aspis.conf</a>
-</li></ul></li><li>3. <a href='#invocation'>Invocation</a>
-</li><li>a. <a href='#tutorial1'>Appendix: chroot tutorial</a>
-
-</li></ul><div class='vspace'></div><h2>1. Install <a name='install' id='install'></a></h2>
+<div class="vspace"></div><h2>Index</h2>
+<ul><li>1. <a href="#install">Install</a>
+<ul><li><a href="#quick">quick installation instructions</a>
+</li><li><a href="#configure">configure options</a>
+</li><li><a href="#options">install options</a>
+</li><li><a href="#post">post installation</a>
+</li><li><a href="#chroot">chroot (aspis in jail)</a>
+</li></ul></li><li>2. <a href="#configuration">Configuration</a>
+<ul><li><a href="#preliminary">preliminary notes</a>
+</li><li><a href="#directives">directives of aspis.conf</a>
+</li></ul></li><li>3. <a href="#invocation">Invocation</a>
+</li><li>a. <a href="#tutorial1">Appendix: chroot tutorial</a>
+</li></ul><div class="vspace"></div><h2>1. Install <a name="install" id="install"></a></h2>
 <p>How to compile and install Aspis from sources.
 </p>
-<div class='vspace'></div><h3>Quick installation instructions <a name='quick' id='quick'></a></h3>
+<div class="vspace"></div><h3>Quick installation instructions <a name="quick" id="quick"></a></h3>
 <p>Run from console:
 </p>
-<p class='vspace'>$ ./configure
+<p class="vspace">$ ./configure
 </p>
-<p class='vspace'>$ make
+<p class="vspace">$ make
 </p>
-<p class='vspace'>$ make install
+<p class="vspace">$ make install
 </p>
-<div class='vspace'></div><h3>Configure options <a name='configure' id='configure'></a></h3>
+<div class="vspace"></div><h3>Configure options <a name="configure" id="configure"></a></h3>
 <p>Besides the usual standard options:
-
 </p>
-<div class='vspace'></div><ul><li>--enable-utf8
+<div class="vspace"></div><ul><li>--enable-utf8
 </li></ul><p>This option enables the support for URLs with Unicode characters (e.g. umlauts, accents).
 </p>
-<div class='vspace'></div><ul><li>--enable-auth
+<div class="vspace"></div><ul><li>--enable-auth
 </li></ul><p>If you need for basic authentication (not extensively tested).
 </p>
-<div class='vspace'></div><ul><li>--enable-ipv6
+<div class="vspace"></div><ul><li>--enable-ipv6
 </li></ul><p>Self explicatory, it enables ipv6 support.
 </p>
-<div class='vspace'></div><ul><li>--enable-gunzip
+<div class="vspace"></div><ul><li>--enable-gunzip
 </li></ul><p>You can serve gzipped pages.
 </p>
-<p class='vspace'>Run "./configure --help", without the quotation marks, for more informations about configure options.
+<div class="vspace"></div><ul><li>--enable-ac
+</li></ul><p>If you want to Allow/Deny access to certain pages.
 </p>
-<p class='vspace'>E.g.
+<p class="vspace">Run "./configure --help", without the quotation marks, for more informations about configure options.
+</p>
+<p class="vspace">E.g.
 $ ./configure --prefix=/usr --enable-utf8 --enable-ipv6
 </p>
-
-<div class='vspace'></div><h3>Install options <a name='options' id='options'></a></h3>
-<p>You can run "make install-strip", without the quotation marks, to install the stripped executables. This is recommended if you don't want to debug Aspis.
+<div class="vspace"></div><h3>Install options <a name="options" id="options"></a></h3>
+<p>You can run "make install-strip", without the quotation marks, to 
+install the stripped executables. This is recommended if you don't want 
+to debug Aspis.
 </p>
-<div class='vspace'></div><h3>Post installation <a name='post' id='post'></a></h3>
-<p>You can find a sample setup in "$(prefix)/share/aspis", where prefix is your installation path. You can change this with the "--prefix=/my/path" option of configure. Afterwards you should put your Aspis configuration file in "/etc/aspis" and your html docs in "/var/www".
+<div class="vspace"></div><h3>Post installation <a name="post" id="post"></a></h3>
+<p>You can find a sample setup in "$(prefix)/share/aspis", where prefix 
+is your installation path. You can change this with the 
+"--prefix=/my/path" option of configure. Afterwards you should put your 
+Aspis configuration file in "/etc/aspis" and your html docs in 
+"/var/www".
 </p>
-<div class='vspace'></div><h3>CHROOT (Aspis put in jail) <a name='chroot' id='chroot'></a></h3>
-<p>If you want to run Aspis in a restricted enviroment, please refer to the <a href='#configuration'>configuration</a> end <a href='#tutorial1'>chroot</a> sections.
-
+<div class="vspace"></div><h3>CHROOT (put Aspis in jail) <a name="chroot" id="chroot"></a></h3>
+<p>If you want to run Aspis in a restricted enviroment, please refer to the <a href="#configuration">configuration</a> end <a href="#tutorial1">chroot</a> sections.
 </p>
-<div class='vspace'></div><h2>2. Configuration <a name='configuration' id='configuration'></a></h2>
+<div class="vspace"></div><h2>2. Configuration <a name="configuration" id="configuration"></a></h2>
 <p>Aspis relies on the sole aspis.conf file for its configuration. A mime.types file is optional, though strongly recommended.
 </p>
-<p class='vspace'>The Aspis configuration file is parsed with a lex/yacc or flex/bison generated parser.  If it reports an error, the line number will be provided. The syntax of each of these rules is very simple, and they can occur in any order.  Where possible, these directives mimic those of NCSA httpd 1.3.
+<p class="vspace">The Aspis configuration file is parsed with a lex/yacc
+ or flex/bison generated parser.  If it reports an error, the line 
+number will be provided. The syntax of each of these rules is very 
+simple, and they can occur in any order.  Where possible, these 
+directives mimic those of NCSA httpd 1.3.
 </p>
-<div class='vspace'></div><h3>Preliminary notes <a name='preliminary' id='preliminary'></a></h3>
+<div class="vspace"></div><h3>Preliminary notes <a name="preliminary" id="preliminary"></a></h3>
 <p>A quick list of preliminary notions about executing CGI and PHP-CGI scripts, restricted environments and SSL.
 </p>
-<div class='vspace'></div><h4>Perl</h4>
-<p>Your Perl scripts must be executables and their first line must be #!/usr/bin/perl, given that /usr/bin/perl is the path to your Perl interpreter. If you want to execute Perl scripts outside of a Script Alias directory ( e.g. cgi-bin/ ), be sure to use the MIME type "application/x-httpd-cgi" for your script files.
+<div class="vspace"></div><h4>Perl</h4>
+<p>Your Perl scripts must be executables and their first line must be 
+#!/usr/bin/perl, given that /usr/bin/perl is the path to your Perl 
+interpreter. If you want to execute Perl scripts outside of a Script 
+Alias directory ( e.g. cgi-bin/ ), be sure to use the MIME type 
+"application/x-httpd-cgi" for your script files.
 </p>
-<div class='vspace'></div><h4>PHP</h4>
-
-<p>First and above all: be sure that your PHP interpreter is compiled with CGI support (usually it's /usr/bin/php-cgi on Linux). PHP files must have the "application/x-httpd-php" MIME type. Moreover you need to set the option "cgi.redirect_status_env" from "php.ini" to 200 and you need to set "RedirectStatus" from aspis.conf to the same value. Be sure that the directive "session.save_path" from php.ini points to a writeable directory, you can set it to "/tmp" if unsure (but it is better a conscious choice).
+<div class="vspace"></div><h4>PHP</h4>
+<p>First and above all: be sure that your PHP interpreter is compiled 
+with CGI support (usually it's /usr/bin/php-cgi on Linux). PHP files 
+must have the "application/x-httpd-php" MIME type. Moreover you need to 
+set the option "cgi.redirect_status_env" from "php.ini" to 200 and you 
+need to set "RedirectStatus" from aspis.conf to the same value. Be sure 
+that the directive "session.save_path" from php.ini points to a 
+writeable directory, you can set it to "/tmp" if unsure (but it is 
+better a conscious choice).
 </p>
-<div class='vspace'></div><h4>Restricted environment (chroot) </h4>
-<p>For a quick guide read the <a href='#tutorial1'>chroot tutorial</a>.
+<div class="vspace"></div><h4>Restricted environment (chroot) </h4>
+<p>For a quick guide read the <a href="#tutorial1">chroot tutorial</a>.
 </p>
-<div class='vspace'></div><h4>SSL </h4>
-<p>Aspis does not support SSL, however you can run Aspis behind the <a class='urllink' href='http://www.apsis.ch/pound' rel='nofollow'>Pound</a> proxy server, that can be used as a lightweight SSL interpreter (and much more...).
+<div class="vspace"></div><h4>SSL </h4>
+<p>Aspis does not support SSL, however you can run Aspis behind the <a class="urllink" href="http://www.apsis.ch/pound" rel="nofollow">Pound</a> proxy server, that can be used as a lightweight SSL interpreter (and much more...).
 </p>
-<div class='vspace'></div><h3>Directives of aspis.conf <a name='directives' id='directives'></a></h3>
-
+<div class="vspace"></div><h3>Directives of aspis.conf <a name="directives" id="directives"></a></h3>
 <p>Not all the directives are required and some of them are incompatible.
 </p>
-<div class='vspace'></div><pre>  * Port &lt; integer &gt;
+<div class="vspace"></div><pre>  * Port &lt; integer &gt;
 </pre><p>This is the port that Aspis runs on.  The default port for http servers is 80. 
 If it is less than 1024, the server must be started as root.
 </p>
-<div class='vspace'></div><pre>  * User &lt; user name or UID &gt;
+<div class="vspace"></div><pre>  * User &lt; user name or UID &gt;
 </pre><p>The name or UID the server should run as.  For Aspis to attempt this, the
 server must be started as root.
 </p>
-<div class='vspace'></div><pre>  * Group &lt; group name or GID &gt;
-
+<div class="vspace"></div><pre>  * Group &lt; group name or GID &gt;
 </pre><p>The group name or GID the server should run as.  For Aspis to attempt this,
 the server must be started as root.
 </p>
-<div class='vspace'></div><pre>  * ServerAdmin &lt; email address &gt;
+<div class="vspace"></div><pre>  * ServerAdmin &lt; email address &gt;
 </pre><p>The email address where server problems should be sent.
 Note: this is not currently used.
 </p>
-<div class='vspace'></div><pre>  * ErrorDocument &lt; string &gt; &lt; file &gt;
-
+<div class="vspace"></div><pre>  * ServerName &lt; server_name &gt;
+</pre><p>The name of this server that should be sent back to
+clients if different than that returned by gethostname.
+</p>
+<div class="vspace"></div><pre>  * ConcealServerIdentity
+</pre><p>Aspis does not report its name and version to clients.
+</p>
+<div class="vspace"></div><pre>  * DocumentRoot &lt; directory &gt;
+</pre><p>The root directory of the HTML documents. If this does not start with
+/, it is considered relative to the server root.
+</p>
+<div class="vspace"></div><pre>  * DirectoryIndex &lt; filename &gt; [ filename ... ]
+</pre><p>List of the file names to use as a pre-written HTML directory 
+index, up to four.  Please  make and use these files.  On the fly 
+creation of directory indexes can be slow.
+</p>
+<div class="vspace"></div><pre>  * DirectoryMaker &lt; file &gt;
+</pre><p>Name of the program used to generate on-the-fly directory 
+listings. The program must take one or two command-line arguments, the 
+first being the directory to index (absolute), and the second, which is 
+optional, contains what Aspis would have the "title" of the document be.
+ If this does not start with /, it is considered relative to the server 
+root.
+</p>
+<div class="vspace"></div><pre>  * DirectoryCache &lt; directory &gt;
+</pre><p>Path to the directory used as cache by the internal directory 
+listing generator. This directive is superseded by DirectoryMaker. 
+Comment out this and DirectoryMaker if you don't want on the fly 
+directory listings.
+</p>
+<div class="vspace"></div><pre>  * KeepAliveMax &lt; integer &gt;
+</pre><p>Number of KeepAlive requests to allow per connection.  Comment out, or set to 0 to disable keepalive processing. 
+</p>
+<div class="vspace"></div><pre>  * KeepAliveTimeout &lt; integer &gt;
+</pre><p>Number of seconds to wait before keepalive connections time out.
+</p>
+<div class="vspace"></div><pre>  * ErrorDocument &lt; string &gt; &lt; file &gt;
 </pre><p>Use this for custom error pages, e.g. ErrorDocument 404 /var/www/404.htm . Only static content is allowed at the moment.
 </p>
-<div class='vspace'></div><pre>  * PidFile &lt; filename &gt;
+<div class="vspace"></div><pre>  * PidFile &lt; filename &gt;
 </pre><p>Where to put the pid of the process.
 Comment out to write no pid file.
 Note: Because Aspis drops privileges at startup, and the
 pid file is written by the UID/GID before doing so, Aspis
 does not attempt removal of the pid file.
 </p>
-<div class='vspace'></div><pre>  * ErrorLog &lt; filename &gt;
+<div class="vspace"></div><pre>  * ErrorLog &lt; filename &gt;
 </pre><p>The location of the error log file.  If this does not start with
 /, it is considered relative to the server root.
 Set to /dev/null if you don't want errors logged. 
 </p>
-<div class='vspace'></div><pre>  * AccessLog &lt; filename &gt;
-
+<div class="vspace"></div><pre>  * AccessLog &lt; filename &gt;
 </pre><p>The location of the access log file.  If this does not start with /, it is
 considered relative to the server root.
 Comment out or set to /dev/null (less effective) to disable access logging.
 </p>
-<div class='vspace'></div><pre>  * VerboseCGILogs
-</pre><p>This is a logical switch and does not take any parameters.
-Comment out to disable.
-</p>
-<div class='vspace'></div><pre>  * CGILog &lt; filename &gt;
+<div class="vspace"></div><pre>  * CGILog &lt; filename &gt;
 </pre><p>The location of the CGI error log file.  If this does not start with /, it 
 is considered relative to the server root. If specified, this is the file 
 that the stderr of CGIs is tied to, *instead* of to the ErrorLog.
 </p>
-<div class='vspace'></div><pre>  * CGIumask &lt; umask &gt;
-
+<div class="vspace"></div><pre>  * VerboseCGILogs
+</pre><p>This is a logical switch and does not take any parameters.
+Comment out to disable.
+</p>
+<div class="vspace"></div><pre>  * CGIumask &lt; umask &gt;
 </pre><p>The CGIumask is set immediately before execution of the CGI.
 The default value is 027. The number must be interpretable
 unambiguously by the C function strtol. No base is specified,
 so one may use a hexadecimal, decimal, or octal number if 
 it is prefixed accordingly.
 </p>
-<div class='vspace'></div><pre>  * ServerName &lt; server_name &gt;
-</pre><p>The name of this server that should be sent back to
-clients if different than that returned by gethostname.
-</p>
-<div class='vspace'></div><pre>  * VirtualHost
+<div class="vspace"></div><pre>  * VirtualHost
 </pre><p>This is a logical switch and does not take any parameters.
 Comment out to disable.
 Given DocumentRoot /var/www, requests on interface 'A' or IP 'IP-A'
 become /var/www/IP-A.
-Example: <a class='urllink' href='http://localhost/' rel='nofollow'>http://localhost/</a> becomes /var/www/127.0.0.1 
+Example: <a class="urllink" href="http://localhost/" rel="nofollow">http://localhost/</a> becomes /var/www/127.0.0.1 
 </p>
-<div class='vspace'></div><pre>  * VHostRoot &lt; directory &gt;
-
-</pre><p>The root location for all virtually hosted data, comment out to disable.
-Incompatible with 'Virtualhost' and 'DocumentRoot'. Given VHostRoot /var/www, requests to host foo.bar.com, where foo.bar.com is ip a.b.c.d,
-become /var/www/a.b.c.d/foo.bar.com . Hostnames are "cleaned", and must conform to the rules specified in rfc1034, which are be summarized here:
+<div class="vspace"></div><pre>  * VHostRoot &lt; directory &gt;
+</pre><p>The root location for all virtually hosted data, comment out to
+ disable.
+Incompatible with 'Virtualhost' and 'DocumentRoot'. Given VHostRoot 
+/var/www, requests to host foo.bar.com, where foo.bar.com is ip a.b.c.d,
+become /var/www/a.b.c.d/foo.bar.com . Hostnames are "cleaned", and must 
+conform to the rules specified in rfc1034, which are be summarized here:
 </p>
-<p class='vspace'>Hostnames must start with a letter, end with a letter or digit, 
+<p class="vspace">Hostnames must start with a letter, end with a letter or digit, 
 and have as interior characters only letters, digits, and hyphen.
 Hostnames must not exceed 63 characters in length.
 </p>
-<div class='vspace'></div><pre>  * DefaultVHost &lt; hostname &gt;
+<div class="vspace"></div><pre>  * DefaultVHost &lt; hostname &gt;
 </pre><p>Define this in order to have a default hostname when the client does not
 specify one, if using VirtualHostName. If not specified, the word
 "default" will be used for compatibility with older clients.
 </p>
-<div class='vspace'></div><pre>  * DocumentRoot &lt; directory &gt;
-</pre><p>The root directory of the HTML documents. If this does not start with
-/, it is considered relative to the server root.
-
-</p>
-<div class='vspace'></div><pre>  * UserDir &lt; directory &gt;
+<div class="vspace"></div><pre>  * UserDir &lt; directory &gt;
 </pre><p>The name of the directory which is appended onto a user's home directory if a
 ~user request is received.
 </p>
-<div class='vspace'></div><pre>  * DirectoryIndex &lt; filename &gt; [ filename ... ]
-</pre><p>List of the file names to use as a pre-written HTML directory index, up to four.  Please  make and use these files.  On the fly creation of directory indexes can be slow.
-</p>
-<div class='vspace'></div><pre>  * DirectoryMaker &lt; file &gt;
-
-</pre><p>Name of the program used to generate on-the-fly directory listings. The program must take one or two command-line arguments, the first being the directory to index (absolute), and the second, which is optional, contains what Aspis would have the "title" of the document be. If this does not start with /, it is considered relative to the server root.
-</p>
-<div class='vspace'></div><pre>  * DirectoryCache &lt; directory &gt;
-</pre><p>Path to the directory used as cache by the internal directory listing generator. This directive is superseded by DirectoryMaker. Comment out this and DirectoryMaker if you don't want on the fly directory listings.
-</p>
-<div class='vspace'></div><pre>  * KeepAliveMax &lt; integer &gt;
-</pre><p>Number of KeepAlive requests to allow per connection.  Comment out, or set to 0 to disable keepalive processing. 
-</p>
-<div class='vspace'></div><pre>  * KeepAliveTimeout &lt; integer &gt;
-
-</pre><p>Number of seconds to wait before keepalive connections time out.
-</p>
-<div class='vspace'></div><pre>  * MimeTypes &lt; file &gt;
+<div class="vspace"></div><pre>  * MimeTypes &lt; file &gt;
 </pre><p>The location of the mime.types
 file.  If this does not start with /, it is considered relative to 
 the server root. Set to /dev/null if you do not want to load a mime types 
 file. Do *not* comment out (better use AddType!)
 </p>
-<div class='vspace'></div><pre>  * DefaultType &lt; mime type &gt;
+<div class="vspace"></div><pre>  * DefaultType &lt; mime type &gt;
 </pre><p>MIME type used if the file extension is unknown, or there is no file extension.
 </p>
-<div class='vspace'></div><pre>  * AddType &lt; mime type &gt; &lt; extension &gt; [extension...]
-
-</pre><p>Associates a MIME type with an extension or extensions. Use the MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) and "application/x-httpd-php" for PHP files.
+<div class="vspace"></div><pre>  * AddType &lt; mime type &gt; &lt; extension &gt; [extension...]
+</pre><p>Associates a MIME type with an extension or extensions. Use the
+ MIME types "application/x-httpd-cgi" for CGI scripts (including Perl) 
+and "application/x-httpd-php" for PHP files.
 </p>
-<div class='vspace'></div><pre>  * RedirectStatus &lt; string &gt;
+<div class="vspace"></div><pre>  * RedirectStatus &lt; string &gt;
 </pre><p>PHP needs this. If you don't use PHP you can safely comment out.
 </p>
-<div class='vspace'></div><pre>  * PhpHandler &lt; file &gt;
+<div class="vspace"></div><pre>  * PhpHandler &lt; file &gt;
 </pre><p>Path to the php interpreter. Default is /usr/bin/php-cgi.
 </p>
-<div class='vspace'></div><pre>  * Redirect, Alias, and ScriptAlias &lt; path1 &gt; &lt; path2 &gt;
-
+<div class="vspace"></div><pre>  * Redirect, Alias, and ScriptAlias &lt; path1 &gt; &lt; path2 &gt;
 </pre><p>Redirect, Alias, and ScriptAlias all have the same semantics \-\- they
 match the beginning of a request and take appropriate action.  Use
 Redirect for other servers, Alias for the same server, and ScriptAlias to
 enable directories for script execution.
 </p>
-<p class='vspace'>Redirect allows you to tell clients about documents which used to exist
-in your server's namespace, but do not anymore.  This allows you tell
-the clients where to look for the relocated document.
+<div class="vspace"></div><div class="indent"><code>Redirect</code> 
+allows you to tell clients about documents which used to exist in your 
+server's namespace, but do not anymore.  This allows you tell the 
+clients where to look for the relocated document.
+<div class="vspace"></div></div><div class="indent"><code>Alias</code> aliases one path to another.  Of course, symbolic links in the file system work fine too.          
+<div class="vspace"></div></div><div class="indent"><code>ScriptAlias</code> maps a virtual path to a directory for serving scripts.
+</div><div class="vspace"></div><pre>  * Allow &lt; pattern &gt;
+</pre><p>When access control is enabled, you can use this directive to allow access to 
+certain files or directories. E.g.: Allow *.jpeg .
 </p>
-<p class='vspace'>Alias aliases one path to another.  Of course, symbolic links in the
-file system work fine too.          
+<div class="vspace"></div><pre>  * Deny &lt; pattern &gt;
+</pre><p>When access control is enabled, you can use this directive to deny access to 
+certain files or directories. E.g.: Deny *private-path/* .
 </p>
-<p class='vspace'>ScriptAlias maps a virtual path to a directory for serving scripts.
-</p>
-<div class='vspace'></div><h2>3. Invocation <a name='invocation' id='invocation'></a></h2>
+<div class="vspace"></div><h2>3. Invocation <a name="invocation" id="invocation"></a></h2>
 <p>aspis [ -c serverroot ] [ -f configfile ] [ -r chroot ] [ -d ] [ -l debug_level ]
 </p>
-<p class='vspace'>By default Aspis reads its configuration from /etc/aspis/aspis.conf . Otherwise from "serverroot"/aspis.conf .
+<p class="vspace">By default Aspis reads its configuration from /etc/aspis/aspis.conf . Otherwise from "serverroot"/aspis.conf .
 </p>
-<div class='vspace'></div><h2>a. Appendix: chroot tutorial <a name='tutorial1' id='tutorial1'></a></h2>
+<div class="vspace"></div><h2>a. Appendix: chroot tutorial <a name="tutorial1" id="tutorial1"></a></h2>
 <p>Tested on a GNU/Linux system. This simple tutorial is just for serving static pages.
 Aspis chroot is a bit different from Boa chroot.
-
 </p>
-<div class='vspace'></div><h3>Set up the environment</h3>
+<div class="vspace"></div><h3>Set up the environment</h3>
 <p>Make a directory that you will use as a jail for Aspis. 
 </p>
-<p class='vspace'>e.g.: mkdir /path/to/jail
+<p class="vspace">e.g.: mkdir /path/to/jail
 </p>
-<p class='vspace'>Set up the following environment inside the jail directory. The asterisk marks customizable and optional paths.
+<p class="vspace">Set up the following environment inside the jail directory. The asterisk marks customizable and optional paths.
 </p>
-<div class='vspace'></div><pre>  dev/
+<div class="vspace"></div><pre>  dev/
      null
      udp
   lib/
@@ -297,31 +360,43 @@ Aspis chroot is a bit different from Boa chroot.
      *log/
      *tmp/
      *www/
-</pre><p class='vspace'>The character devices null and udp should be created with "mknod -m 666 dev/null c 1 3".
-Your lib (or lib64, it depends on your system) directory should contain the libraries needed by Aspis, run "ldd aspis" to know that for sure.
+</pre><p class="vspace">The character devices null and udp should be 
+created with "mknod -m 666 dev/null c 1 3".
+Your lib (or lib64, it depends on your system) directory should contain 
+the libraries needed by Aspis, run "ldd aspis" to know that for sure.
 </p>
-<p class='vspace'>The aspis executable, the aspis.conf file and the mime.types file should be kept outside of the jail.
+<p class="vspace">The aspis executable, the aspis.conf file and the mime.types file should be kept outside of the jail.
 </p>
-<p class='vspace'>For directory listing you can use either the external binary aspis_indexer or the faster uglier internal one. The latter option needs for a directory like var/tmp/ for caching, however you can get rid of the bin directory and aspis_indexer file.
+<p class="vspace">For directory listing you can use either the external 
+binary aspis_indexer or the faster uglier internal one. The latter 
+option needs for a directory like var/tmp/ for caching, however you can 
+get rid of the bin directory and aspis_indexer file.
 </p>
-
-<div class='vspace'></div><h3>Set up the config file </h3>
-<p>All your path must be relative to your jail dir, e.g. "DocumentRoot /var/www/" or "ErrorLog /var/log/error.log", if their real paths are "/path/to/jail/var/www/" and
+<div class="vspace"></div><h3>Set up the config file </h3>
+<p>All your path must be relative to your jail dir, e.g. "DocumentRoot 
+/var/www/" or "ErrorLog /var/log/error.log", if their real paths are 
+"/path/to/jail/var/www/" and
 "/path/to/jail/var/log/error.log".
-It is mandatory to set the User and Group options if you run this as root.
+It is mandatory to set the User and Group options if you run this as 
+root.
 </p>
-<p class='vspace'>If you use the directory indexer be sure to copy the binary file inside the jail,
+<p class="vspace">If you use the directory indexer be sure to copy the binary file inside the jail,
 if you prefer to let aspis list directory content comment out DirectoryMaker and set
 DirectoryCache to a valid path inside the jail, e.g. /var/tmp.
 </p>
-<div class='vspace'></div><h3>Invocation and final notes </h3>
+<div class="vspace"></div><h3>Invocation and final notes </h3>
 <p>Now you should run aspis with the command:
 aspis -c /path/to/aspis.conf-dir/ -r /path/to/jail/
 </p>
-<p class='vspace'>Aspis reads the configuration file, then changes its root dir, then switches to a new (not root) user, then starts the server.
+<p class="vspace">Aspis reads the configuration file, then changes its root dir, then switches to a new (not root) user, then starts the server.
 All the files in the jail should be owned by root, whenever possible.
 You should run aspis as a low privileged user (using the User and Group directives of aspis.conf).
 </p>
+</div>
 
-  </body>
-</html>
+  <div id="printfoot">
+    <div class="lastmod">Page last modified on January 11, 2012, at 10:56 PM</div></div>
+<!--HTMLFooter-->
+
+
+</body></html>
