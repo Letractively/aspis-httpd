@@ -8,4 +8,7 @@ aspis_SOURCES = alias.c aspis.c buffer.c cgi.c cgi_header.c config.c escape.c \
 if USE_AUTH
 aspis_SOURCES += auth.c
 endif
+if USE_AC
+aspis_SOURCES += access.c
+endif
 aspis_indexer_SOURCES = index_dir.c escape.c

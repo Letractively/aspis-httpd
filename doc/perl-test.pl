@@ -4,7 +4,7 @@ print <<EOH;
 
 <html>
 <header>
-<title>Index.pl</title>
+<title>Perl test</title>
 </header>
 
 <body>

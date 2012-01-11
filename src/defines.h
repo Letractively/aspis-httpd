@@ -71,8 +71,8 @@
 #define CGI_MIME_TYPE                           "application/x-httpd-cgi"
 #define PHP_MIME_TYPE                           "application/x-httpd-php"
 
-#define DEFAULT_PHP_HANDLER						"/usr/bin/php-cgi"
-#define DEFAULT_DIR_INDEX						"index.html"
+#define DEFAULT_PHP_HANDLER			"/usr/bin/php-cgi"
+#define DEFAULT_DIR_INDEX			"index.html"
 
 /***** CHANGE ANYTHING BELOW THIS LINE AT YOUR OWN PERIL *****/
 /***** You will probably introduce buffer overruns unless you know
@@ -88,7 +88,7 @@
 #endif
 
 #ifndef SERVER_VERSION
-#define SERVER_VERSION 				"Aspis v. 0.4"
+#define SERVER_VERSION 				"Aspis v0.5"
 #endif
 
 #define CGI_VERSION				"CGI/1.1"

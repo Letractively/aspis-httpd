@@ -854,11 +854,20 @@ int process_header_end(request * req)
         SQUASH_KA(req);
         return 0;               /* failure, close down */
     }
+
 #ifdef USE_AUTH
-	if (!auth_authorize(req)) {
-		return 0;
-	}
+    if (!auth_authorize(req)) {
+      return 0;
+    }
 #endif
+
+#ifdef USE_AC
+    if (!access_allow(req->pathname)) {
+      send_r_forbidden(req);
+      return 0;
+    }
+#endif
+
     if (req->method == M_POST) {
         req->post_data_fd = create_temporary_file(1, NULL, 0);
         if (req->post_data_fd == 0) {

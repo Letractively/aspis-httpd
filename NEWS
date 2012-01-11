@@ -1,7 +1,14 @@
+11/1/2012 :: Aspis version 0.5 is released
+
+  What's new in this release:
+  * Drupal works (fixed request_uri bug)
+  * access control
+  * aspis_indexer can use CSS
+  * a few bus fixed
+
 12/12/2011 :: Aspis version 0.4 is released
   
   What's new in this release:
-  * complete support to UTF-8
   * a few bugs fixed
 
 9/12/2011 :: Aspis version 0.3 is released

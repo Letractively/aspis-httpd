@@ -257,7 +257,16 @@ static int complete_env(request * req)
     my_add_cgi_env(req, "SERVER_ADDR", req->local_ip_addr);
     my_add_cgi_env(req, "SERVER_PROTOCOL",
                    http_ver_string(req->http_version));
-    my_add_cgi_env(req, "REQUEST_URI", req->request_uri);
+    if (req->query_string) {
+      char cpt[1025];
+      unsigned int lru = strlen(req->request_uri);
+      memcpy(cpt, req->request_uri, lru);
+      memcpy(cpt + lru, "?", 1);
+      memcpy(cpt + lru + 1, req->query_string, strlen(req->query_string) + 1);
+      my_add_cgi_env(req, "REQUEST_URI", cpt);
+      my_add_cgi_env(req, "QUERY_STRING", req->query_string);
+    } else
+      my_add_cgi_env(req, "REQUEST_URI", req->request_uri);
 
     if (req->path_info)
         my_add_cgi_env(req, "PATH_INFO", req->path_info);
@@ -271,30 +280,28 @@ static int complete_env(request * req)
 
     my_add_cgi_env(req, "SCRIPT_NAME", req->script_name);
 
-    if (req->query_string)
-        my_add_cgi_env(req, "QUERY_STRING", req->query_string);
     my_add_cgi_env(req, "REMOTE_ADDR", req->remote_ip_addr);
     my_add_cgi_env(req, "REMOTE_PORT", simple_itoa(req->remote_port));
     
     /* PHP */
     if (redirect_status)
-		my_add_cgi_env(req, "REDIRECT_STATUS", redirect_status);
-	
-	if (req->cgi_type == PHP) {
-		char cpt[1025];
-		unsigned int lpn = strlen(req->pathname);
-		if (req->pathname[0] == '/') {
-			my_add_cgi_env(req, "SCRIPT_FILENAME", req->pathname);
-		} else {
-			memcpy(cpt, server_root, server_root_len);
-			/*if (cpt[server_root_len - 1] != '/') {
-				cpt[server_root_len] = '/';
-				server_root_len++;
-			}*/
-			memcpy(cpt + server_root_len, req->pathname ,lpn + 1);
-			my_add_cgi_env(req, "SCRIPT_FILENAME", cpt);
-		}
-	}
+      my_add_cgi_env(req, "REDIRECT_STATUS", redirect_status);
+
+    if (req->cgi_type == PHP) {
+      char cpt[1025];
+      unsigned int lpn = strlen(req->pathname);
+      if (req->pathname[0] == '/') {
+	my_add_cgi_env(req, "SCRIPT_FILENAME", req->pathname);
+      } else {
+	memcpy(cpt, server_root, server_root_len);
+	/*if (cpt[server_root_len - 1] != '/') {
+	  cpt[server_root_len] = '/';
+	  server_root_len++;
+	}*/
+	memcpy(cpt + server_root_len, req->pathname ,lpn + 1);
+	my_add_cgi_env(req, "SCRIPT_FILENAME", cpt);
+      }
+    }
 
     if (req->method == M_POST) {
         if (req->content_type) {
