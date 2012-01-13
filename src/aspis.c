@@ -242,7 +242,7 @@ static void drop_privs1(void)
 {
     /* give away our privs if we can */
     if (getuid() == 0) {
-        passwdbuf = (struct passwd *)malloc(sizeof(struct passwd));
+        /*passwdbuf = (struct passwd *)malloc(sizeof(struct passwd));*/
         passwdbuf = getpwuid(server_uid);
         if (passwdbuf == NULL) {
             DIE("getpwuid");
@@ -278,7 +278,11 @@ static void drop_privs2(void)
         if (server_uid != 0 && setuid(0) != -1) {
             DIE("icky Linux kernel bug!");
         }
-        free(passwdbuf);
+	/*free(passwdbuf);*/
+	passwdbuf->pw_name = NULL;
+	passwdbuf->pw_passwd = NULL;
+	passwdbuf->pw_gid = 0;
+	passwdbuf->pw_uid = 0;
     }
 }
 
