@@ -35,6 +35,7 @@ AC_ARG_ENABLE([auth],[AS_HELP_STRING([--enable-auth],[basic authentication suppo
 AC_ARG_ENABLE([inet6],[AS_HELP_STRING([--enable-inet6],[ipv6 addressing])],USE_INET6="yes", USE_INET6="no")
 AC_ARG_ENABLE([gunzip],[AS_HELP_STRING([--enable-gunzip],[compressed web pages])],USE_GUNZIP="yes", USE_GUNZIP="no")
 AC_ARG_ENABLE([ac],[AS_HELP_STRING([--enable-ac],[support for access control])],USE_AC="yes", USE_AC="no")
+AC_ARG_ENABLE([ac],[AS_HELP_STRING([--enable-rlimit],[use resource limits for CGI])],USE_SETRLIMIT="yes", USE_SETRLIMIT="no")
 
 if test $USE_UNICODE = yes ; then 
   CFLAGS="$CFLAGS -DUSE_UNICODE"
@@ -78,6 +79,13 @@ if test $USE_AC = yes ; then
 else
   USE_AC=0
   AM_CONDITIONAL([USE_AC], [test xtrue = xtrue])
+fi
+
+if test $USE_SETRLIMIT = yes ; then 
+  CFLAGS="$CFLAGS -DUSE_SETRLIMIT"
+  AC_MSG_RESULT([CGI resource limits... enabled])
+else
+  USE_SETRLIMIT=0
 fi
 
 if test x$uname == xSunOS; then

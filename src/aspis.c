@@ -184,10 +184,10 @@ static void parse_commandline(int argc, char *argv[])
             config_file_name = optarg;
             break;
         case 'r':
-			if (optarg) {
-				chroot_dir = (char *)malloc(sizeof(optarg));
-				chroot_dir = strdup(optarg);
-			}
+	    if (optarg) {
+		chroot_dir = (char *)malloc(sizeof(optarg));
+		chroot_dir = strdup(optarg);
+	    }
             break;
 #ifndef DISABLE_DEBUG
         case 'l':
