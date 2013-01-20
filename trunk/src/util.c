@@ -748,7 +748,7 @@ int base64decode(void *dst,char *src,int maxlen)
    if ((src[x]>='a')&&(src[x]<='z')) val=src[x]-'a'+26; else
    if ((src[x]>='0')&&(src[x]<='9')) val=src[x]-'0'+52; else
    if (src[x]=='+') val=62; else
-   if (src[x]=='-') val=63; else
+   if (src[x]=='/') val=63; else
     val=-1;
    if (val>=0)
     {
@@ -769,8 +769,8 @@ int base64decode(void *dst,char *src,int maxlen)
  return y;
 }
 
-static char base64chars[64] = "abcdefghijklmnopqrstuvwxyz"
-                              "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
+static char base64chars[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                              "abcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /*
  * Name: base64encode()
